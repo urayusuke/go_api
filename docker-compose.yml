@@ -1,0 +1,24 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: go_api
+
+  api:
+    build: ./api
+    depends_on:
+      - db
+    environment: 
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: go_api
+    tty: true
+    volumes:
+      - ./api:/go_api/src
+    ports:
+      - "3000:3000"
