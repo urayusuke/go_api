@@ -1,17 +1,18 @@
-package main 
+package main
 
 import (
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
+	"./auth"
 )
 
 func main() {
     router := gin.Default()
 
-    router.GET("/", func(c *gin.Context) {
-        c.JSON(200, gin.H{
-            "message": "Hello World",
-        })
-    })
+    router.POST("/login", auth.LoginHandler)
+    authorized := router.Group("/", atuh.AuthMiddleware())
+    {
+        authorized.GET("/protected", protectedHandler)
+    }
 
-    router.Run(":3000")
+    router.Run(":8080")
 }
